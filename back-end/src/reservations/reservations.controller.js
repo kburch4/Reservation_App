@@ -19,12 +19,12 @@ async function list(req, res) {
   }
 }
 
-async function create(req, res) {
+async function create(req, res, next) {
   const data = await service.create(req.body.data);
   res.status(201).json({ data });
 }
 
-async function read(res) {
+async function read(req, res, next) {
   const data = res.locals.reservation;
   res.json({ data });
 }
@@ -41,7 +41,7 @@ async function updateStatus(req, res, next) {
   res.json({ data });
 }
 
-async function updateRes(req, res) {
+async function updateRes(req, res, next) {
   const data = await service.updateRes(req.body.data);
   res.json({ data });
 }
@@ -59,11 +59,10 @@ const properties = [
   "reservation_time",
   "people",
 ];
-
 const hasRequiredProperties = hasProperties(properties);
 
 // function to validate the format of the date
-function validDate(req, next) {
+function validDate(req, res, next) {
   const date = req.body.data.reservation_date;
   const validDate = /\d{4}-\d{2}-\d{2}/.test(date);
   if (!date || !validDate) {
@@ -76,7 +75,7 @@ function validDate(req, next) {
 }
 
 // function to validate the format of the time
-function validTime(req, next) {
+function validTime(req, res, next) {
   const time = req.body.data.reservation_time;
   const validTime = /[0-9]{2}:[0-9]{2}/.test(time);
   if (!time || !validTime) {
@@ -127,8 +126,6 @@ function notTuesday(req, res, next) {
   }
   next();
 }
-
-// function to validate that the reservation is within the opening hours
 function openHours(req, res, next) {
   const resDate = req.body.data.reservation_date;
   const resTime = req.body.data.reservation_time;
@@ -179,8 +176,6 @@ function bookedStatus(req, res, next) {
   }
   next();
 }
-
-// function that makes sure the existing reservation isn't finished so it can be updated
 function notFinished(req, res, next) {
   const { status } = res.locals.reservation;
   if (status !== "booked" && status !== "seated") {
