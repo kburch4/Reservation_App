@@ -94,6 +94,12 @@ function Dashboard({ date }) {
         >
           Next
         </button>
+        <button
+          type="button"
+          className="btn btn-outline-primary mx-2 my-2"
+        >
+          {currentDate}
+        </button>
       </div>
       <br />
       <ShowReservations reservations={reservations} />
