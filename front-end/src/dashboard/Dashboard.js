@@ -57,7 +57,7 @@ function Dashboard({ date }) {
   useEffect(loadDashboard, [currentDate]);
 
   return (
-    <main getDate>
+    <main>
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date</h4>
