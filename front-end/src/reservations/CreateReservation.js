@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import ReservationForm from "./ReservationForm";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
+import { previous, next, today } from "../utils/date-time";
 
 function CreateReservation() {
   const history = useHistory();
@@ -30,7 +31,7 @@ function CreateReservation() {
         formData,
         abortController.signal
       );
-      history.push(`/dashboard?date=${response.reservation_date}`);
+      history.push(`/dashboard?date=${today()}`);
     } catch (error) {
       if (error.name !== "AbortError") {
         setErr(error);
